@@ -236,7 +236,7 @@ def get_categories():
 
 def main_menu():
     print("\n" + "="*40)
-    print("Добро пожаловать в менеджер паролей mykeychain!")
+    print("Добро пожаловать в менеджер паролей MyKeyChain!")
     print("="*40)
     print("1. Создать аккаунт")
     print("2. Войти")
