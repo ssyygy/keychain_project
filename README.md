@@ -26,6 +26,6 @@ Python 3.7 или выше\
 ## **🚀 Быстрый старт**
 Скачайте файл mykeychain.py\
 Запустите в терминале:\
-bash\
+bash
+python mykeychain.py
 
-python mykeychain.py\
