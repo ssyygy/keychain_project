@@ -57,25 +57,7 @@ def save_users(users):
     with open(USERS_FILE, "w", encoding="utf-8") as f:
         json.dump(users, f, ensure_ascii=False, indent=2)
 
-def main():
-    while True:
-        main_menu()
-        choice = input("Выберите действие: ").strip()
-        if choice == "1":
-            login_name = create_account()
-            if login_name:
-                users = load_users()
-                user_session(login_name, users)
-        elif choice == "2":
-            login()
-        elif choice == "3":
-            print("Выход.")
-            break
-        else:
-            print("Неверный выбор.")
-
 def create_account():
-    """Создание нового аккаунта с возвратом логина"""
     users = load_users()
     while True:
         login_name = input("Введите логин: ").strip()
@@ -103,7 +85,8 @@ def create_account():
 
     users[login_name] = {
         "master_password": master,
-        "passwords": {}
+        "passwords": {},
+        "custom_categories": []
     }
     save_users(users)
     print("Аккаунт создан успешно!")
@@ -141,30 +124,115 @@ def login():
             if 2-tries==1: print(f"Неверный пароль. У вас осталось 1 попытка!")
             elif 2-tries==2: print(f"Неверный пароль. У вас осталось 2 попытки!")
     print("\n"+"Слишком много попыток!")
-def show_passwords(login_name: str, users: dict):
-    """
-    Функция отображения сохраненных паролей пользователя
 
-    Функция выводит в консоль все сохранённые пароли текущего пользователя
-    в расшифрованном виде. Для расшифровки используется шифр Цезаря
-    со сдвигом, равным длине пароля.
+def select_category(login_name: str, users: dict) -> str:
+    print("\n" + "="*30)
+    print("Выберите категорию:")
+    print("="*30)
+    
+    standard_categories = get_categories()
+    print("Стандартные категории:")
+    for i, category in enumerate(standard_categories, 1):
+        print(f"{i}. {category}")
+    
+    custom_categories = users[login_name].get("custom_categories", [])
+    if custom_categories:
+        print("\nВаши категории:")
+        for i, category in enumerate(custom_categories, len(standard_categories) + 1):
+            print(f"{i}. {category}")
+    
+    print(f"{len(standard_categories) + len(custom_categories) + 1}. Создать новую категорию")
+    print("="*30)
+    
+    while True:
+        choice = input("Выберите номер категории: ").strip()
+        if choice.isdigit():
+            choice_num = int(choice)
+            total_standard = len(standard_categories)
+            total_categories = total_standard + len(custom_categories)
+            
+            if 1 <= choice_num <= total_standard:
+                return standard_categories[choice_num - 1]
+            elif total_standard < choice_num <= total_categories:
+                return custom_categories[choice_num - total_standard - 1]
+            elif choice_num == total_categories + 1:
+                return create_new_category(login_name, users)
+        
+        print("Неверный выбор. Попробуйте снова.")
 
-    :param login_name: Логин текущего пользователя
-    :type login_name: str
-    :param users: Словарь пользователей и их сохранённых данных
-    :type users: dict
-    """
-    passwords = users[login_name]["passwords"]
-    if not passwords:
-        print("Список паролей пуст.")
+def show_passwords_by_category(login_name: str, users: dict):
+
+    all_categories = get_categories() + users[login_name].get("custom_categories", [])
+    if not all_categories:
+        print("Нет доступных категорий.")
         return
-    print("\nСохранённые пароли:")
-    print("-" * 40)
-    for resource, encrypted in passwords.items():
-        shift = len(encrypted)
-        decrypted = caesar_cipher(encrypted, shift, decrypt=True)
+    
+    print("\nДоступные категории:")
+    for i, category in enumerate(all_categories, 1):
+        print(f"{i}. {category}")
+    
+    choice = input("\nВыберите номер категории: ").strip()
+    if not choice.isdigit() or not (1 <= int(choice) <= len(all_categories)):
+        print("Неверный выбор.")
+        return
+    
+    selected_category = all_categories[int(choice) - 1]
+    passwords = users[login_name]["passwords"]
+
+    filtered = [(r, d) for r, d in passwords.items() if d.get("category") == selected_category]
+    
+    if not filtered:
+        print(f"В категории '{selected_category}' нет паролей.")
+        return
+    
+    print(f"\nПароли в категории '{selected_category}':")
+    print("="*40)
+    for resource, data in sorted(filtered, key=lambda x: x[0]):
+        shift = len(data["encrypted"])
+        decrypted = caesar_cipher(data["encrypted"], shift, decrypt=True)
         print(f"{resource}: {decrypted}")
-    print("-" * 40) 
+    print(f"\nВсего в категории: {len(filtered)}")
+
+def search_passwords(login_name: str, users: dict):
+    search_term = input("Введите часть названия ресурса: ").strip().lower()
+    if not search_term:
+        print("Пустой поисковый запрос.")
+        return
+    
+    passwords = users[login_name]["passwords"]
+    found = []
+    
+    for resource, data in passwords.items():
+        if search_term in resource.lower():
+            found.append((resource, data))
+    
+    if not found:
+        print("Ничего не найдено.")
+        return
+    
+    print(f"\nРезультаты поиска '{search_term}':")
+    print("="*40)
+    for resource, data in sorted(found, key=lambda x: x[0]):
+        shift = len(data["encrypted"])
+        decrypted = caesar_cipher(data["encrypted"], shift, decrypt=True)
+        category = data.get("category", "Без категории")
+        print(f"{resource} [{category}]: {decrypted}")
+    print(f"\nНайдено: {len(found)}")
+
+#ДАШАААА
+def get_categories():
+    return [
+        "Соцсети",
+        "Банки/Финансы", 
+        "Работа/Бизнес",
+        "Электронная почта",
+        "Образование",
+        "Развлечения",
+        "Магазины/Покупки",
+        "Здоровье/Медицина",
+        "Государственные услуги",
+        "Другое"
+    ]
 
 def main_menu():
     print("\n" + "="*40)
@@ -181,9 +249,28 @@ def user_menu():
     print("2. Изменить пароль")
     print("3. Удалить пароль")
     print("4. Сгенерировать пароль")
-    print("5. Показать пароли")
-    print("6. Выйти из аккаунта")
+    print("5. Показать все пароли")
+    print("6. Показать пароли по категории")
+    print("7. Поиск паролей")
+    print("8. Выйти из аккаунта")
     print("-"*40)
+
+def main():
+    while True:
+        main_menu()
+        choice = input("Выберите действие: ").strip()
+        if choice == "1":
+            login_name = create_account()
+            if login_name:
+                users = load_users()
+                user_session(login_name, users)
+        elif choice == "2":
+            login()
+        elif choice == "3":
+            print("Выход.")
+            break
+        else:
+            print("Неверный выбор.")
 
 def user_session(login_name: str, users: dict):
     while True:
@@ -198,8 +285,12 @@ def user_session(login_name: str, users: dict):
         elif choice == "4":
             generate_and_show_password()
         elif choice == "5":
-            show_passwords(login_name, users)
+            show_all_passwords(login_name, users)
         elif choice == "6":
+            show_passwords_by_category(login_name, users)
+        elif choice == "7":
+            search_passwords(login_name, users)
+        elif choice == "8":
             save_users(users)
             print("Вы вышли из аккаунта.")
             break
@@ -231,6 +322,25 @@ def generate_password(length=12, use_digits=True, use_special=True):
         chars += "!@#$%^&*"
     return ''.join(secrets.choice(chars) for _ in range(length))
 
+def create_new_category(login_name: str, users: dict) -> str:
+    while True:
+        new_category = input("Введите название новой категории: ").strip()
+        if not new_category:
+            print("Название не может быть пустым.")
+            continue
+        
+        all_categories = get_categories() + users[login_name].get("custom_categories", [])
+        if new_category in all_categories:
+            print("Такая категория уже существует.")
+            continue
+        
+        if "custom_categories" not in users[login_name]:
+            users[login_name]["custom_categories"] = []
+        users[login_name]["custom_categories"].append(new_category)
+        save_users(users)
+        print(f"Категория '{new_category}' создана!")
+        return new_category
+
 def add_password(login_name: str, users: dict):
     """
     Функция добавления нового пароля для пользователя.
@@ -251,13 +361,20 @@ def add_password(login_name: str, users: dict):
         print("\n"+"Пароль для этого ресурса уже существует.")
         return
 
+    category = select_category(login_name, users)
+    
     password = input("Пароль (оставьте пустым для генерации): ")
     if not password:
         password = generate_and_show_password(auto=True)
 
     shift = len(password)
     encrypted = caesar_cipher(password, shift)
-    users[login_name]["passwords"][resource] = encrypted
+    
+    users[login_name]["passwords"][resource] = {
+        "encrypted": encrypted,
+        "category": category
+    }
+    
     print("Пароль добавлен.")
 
 def update_password(login_name: str, users: dict):
@@ -275,7 +392,13 @@ def update_password(login_name: str, users: dict):
 
     shift = len(password)
     encrypted = caesar_cipher(password, shift)
-    users[login_name]["passwords"][resource] = encrypted
+    
+    old_category = users[login_name]["passwords"][resource]["category"]
+    
+    users[login_name]["passwords"][resource] = {
+        "encrypted": encrypted,
+        "category": old_category
+    }
     print("Пароль обновлён.")
 
 def delete_password(login_name: str, users: dict):
@@ -306,6 +429,34 @@ def generate_and_show_password(auto=False):
     if not auto:
         print(f"Сгенерированный пароль: {pwd}")
     return pwd
+
+def show_all_passwords(login_name: str, users: dict):
+    passwords = users[login_name]["passwords"]
+    if not passwords:
+        print("Список паролей пуст.")
+        return
+    
+    print("\n" + "="*60)
+    print("ВСЕ СОХРАНЕННЫЕ ПАРОЛИ")
+    print("="*60)
+    
+    categories = {}
+    for resource, data in passwords.items():
+        category = data.get("category", "Без категории")
+        if category not in categories:
+            categories[category] = []
+        categories[category].append((resource, data))
+    
+    for category, items in sorted(categories.items()):
+        print(f"\n[{category.upper()}]")
+        print("-" * 40)
+        for resource, data in sorted(items, key=lambda x: x[0]):
+            shift = len(data["encrypted"])
+            decrypted = caesar_cipher(data["encrypted"], shift, decrypt=True)
+            print(f"{resource}: {decrypted}")
+    
+    print("\n" + "="*60)
+    print(f"Всего паролей: {len(passwords)}")
 
 if __name__ == "__main__":
     try:
