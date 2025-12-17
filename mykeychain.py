@@ -295,7 +295,7 @@ def delete_password(login_name: str, users: dict):
         print("Удаление отменено.")
 
 def generate_and_show_password(auto=False):
-    length = input("Длина пароля (по умолчанию 12): ").strip()
+    length = input("Длина пароля (минимальная длина 4, по умолчанию 12): ").strip()
     length = int(length) if length.isdigit() else 12
     if length < 4:
         length = 12
