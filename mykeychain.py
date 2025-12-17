@@ -2,6 +2,7 @@ import json
 import os
 import secrets
 import string 
+import getpass
 
 CHARSET_FILE = "charset.txt"
 USERS_FILE = "users.json"
@@ -73,11 +74,11 @@ def create_account():
             break
 
     while True:
-        master = input("Введите мастер-пароль (минимум 6 символов): ")
+        master = getpass.getpass("Введите мастер-пароль (минимум 6 символов): ")
         if len(master) < 6:
             print("Слишком короткий пароль.")
             continue
-        confirm = input("Подтвердите мастер-пароль: ")
+        confirm = getpass.getpass("Подтвердите мастер-пароль: ")
         if master != confirm:
             print("Пароли не совпадают.")
             continue
@@ -115,7 +116,7 @@ def login():
         return
 
     for tries in range(3):
-        master = input("Мастер-пароль: ")
+        master = getpass.getpass("Мастер-пароль: ")
         if master == users[login_name]["master_password"]:
             print("Вход выполнен!")
             user_session(login_name, users)
