@@ -119,8 +119,81 @@
         
          
 
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+    
+    <li class="">
         
         
+        
+
+        
+            <div class="itemName"><code><a href="mykeychain.AuthenticationError.html" class="internal-link" title="mykeychain.AuthenticationError"><wbr></wbr>Authentication<wbr></wbr>Error</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="mykeychain.InvalidInputError.html" class="internal-link" title="mykeychain.InvalidInputError"><wbr></wbr>Invalid<wbr></wbr>Input<wbr></wbr>Error</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="mykeychain.MyKeyChainError.html" class="internal-link" title="mykeychain.MyKeyChainError"><wbr></wbr>My<wbr></wbr>Key<wbr></wbr>Chain<wbr></wbr>Error</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="mykeychain.ResourceExistsError.html" class="internal-link" title="mykeychain.ResourceExistsError"><wbr></wbr>Resource<wbr></wbr>Exists<wbr></wbr>Error</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="mykeychain.ResourceNotFoundError.html" class="internal-link" title="mykeychain.ResourceNotFoundError"><wbr></wbr>Resource<wbr></wbr>Not<wbr></wbr>Found<wbr></wbr>Error</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="mykeychain.UserExistsError.html" class="internal-link" title="mykeychain.UserExistsError"><wbr></wbr>User<wbr></wbr>Exists<wbr></wbr>Error</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="mykeychain.UserNotFoundError.html" class="internal-link" title="mykeychain.UserNotFoundError"><wbr></wbr>User<wbr></wbr>Not<wbr></wbr>Found<wbr></wbr>Error</a></code>
+            </div>
+        
+
+    </li>
+</ul>
 
         <div class="childrenKindTitle">Functions</div>
         <ul>
@@ -421,36 +494,71 @@
           <table class="children sortable" id="id1">
   
   
-  <tr class="function">
+  <tr class="exception">
+    
+    <td>Exception</td>
+    <td><code><a href="mykeychain.AuthenticationError.html" class="internal-link" title="mykeychain.AuthenticationError"><wbr></wbr>Authentication<wbr></wbr>Error</a></code></td>
+    <td>Ошибка аутентификации (неверный пароль)</td>
+  </tr><tr class="exception">
+    
+    <td>Exception</td>
+    <td><code><a href="mykeychain.InvalidInputError.html" class="internal-link" title="mykeychain.InvalidInputError"><wbr></wbr>Invalid<wbr></wbr>Input<wbr></wbr>Error</a></code></td>
+    <td>Некорректный ввод от пользователя (пустой логин, короткий пароль и т.д.)</td>
+  </tr><tr class="exception">
+    
+    <td>Exception</td>
+    <td><code><a href="mykeychain.MyKeyChainError.html" class="internal-link" title="mykeychain.MyKeyChainError"><wbr></wbr>My<wbr></wbr>Key<wbr></wbr>Chain<wbr></wbr>Error</a></code></td>
+    <td>Базовый класс для всех исключений MyKeyChain</td>
+  </tr><tr class="exception">
+    
+    <td>Exception</td>
+    <td><code><a href="mykeychain.ResourceExistsError.html" class="internal-link" title="mykeychain.ResourceExistsError"><wbr></wbr>Resource<wbr></wbr>Exists<wbr></wbr>Error</a></code></td>
+    <td>Пароль для ресурса уже существует</td>
+  </tr><tr class="exception">
+    
+    <td>Exception</td>
+    <td><code><a href="mykeychain.ResourceNotFoundError.html" class="internal-link" title="mykeychain.ResourceNotFoundError"><wbr></wbr>Resource<wbr></wbr>Not<wbr></wbr>Found<wbr></wbr>Error</a></code></td>
+    <td>Ресурс не найден при обновлении/удалении</td>
+  </tr><tr class="exception">
+    
+    <td>Exception</td>
+    <td><code><a href="mykeychain.UserExistsError.html" class="internal-link" title="mykeychain.UserExistsError"><wbr></wbr>User<wbr></wbr>Exists<wbr></wbr>Error</a></code></td>
+    <td>Попытка создать аккаунт с уже существующим логином</td>
+  </tr><tr class="exception">
+    
+    <td>Exception</td>
+    <td><code><a href="mykeychain.UserNotFoundError.html" class="internal-link" title="mykeychain.UserNotFoundError"><wbr></wbr>User<wbr></wbr>Not<wbr></wbr>Found<wbr></wbr>Error</a></code></td>
+    <td>Пользователь не найден</td>
+  </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#add_password" class="internal-link" title="mykeychain.add_password">add<wbr></wbr>_password</a></code></td>
-    <td>Функция добавления нового пароля для пользователя.</td>
+    <td>Добавляет новый пароль для ресурса.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#caesar_cipher" class="internal-link" title="mykeychain.caesar_cipher">caesar<wbr></wbr>_cipher</a></code></td>
-    <td>Функция шифрования/расшифровки строки с использованием шифра Цезаря.</td>
+    <td>Функция шифрования/расшифровки строки c использованием шифра Цезаря.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#create_account" class="internal-link" title="mykeychain.create_account">create<wbr></wbr>_account</a></code></td>
-    <td><span class="rst-undocumented">Undocumented</span></td>
+    <td>Создаёт новый пользовательский аккаунт в системе.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#create_new_category" class="internal-link" title="mykeychain.create_new_category">create<wbr></wbr>_new<wbr></wbr>_category</a></code></td>
-    <td><span class="rst-undocumented">Undocumented</span></td>
+    <td>Создаёт новую пользовательскую категорию.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#delete_password" class="internal-link" title="mykeychain.delete_password">delete<wbr></wbr>_password</a></code></td>
-    <td><span class="rst-undocumented">Undocumented</span></td>
+    <td>Удаляет пароль для ресурса.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#generate_and_show_password" class="internal-link" title="mykeychain.generate_and_show_password">generate<wbr></wbr>_and<wbr></wbr>_show<wbr></wbr>_password</a></code></td>
-    <td><span class="rst-undocumented">Undocumented</span></td>
+    <td>Взаимодействует с пользователем для генерации пароля по заданным параметрам.</td>
   </tr><tr class="function">
     
     <td>Function</td>
@@ -460,72 +568,72 @@
     
     <td>Function</td>
     <td><code><a href="#get_categories" class="internal-link" title="mykeychain.get_categories">get<wbr></wbr>_categories</a></code></td>
-    <td><span class="rst-undocumented">Undocumented</span></td>
+    <td>Возвращает список стандартных категорий для группировки паролей.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#load_charset" class="internal-link" title="mykeychain.load_charset">load<wbr></wbr>_charset</a></code></td>
-    <td><span class="rst-undocumented">Undocumented</span></td>
+    <td>Загружает набор символов из файла charset.txt.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#load_users" class="internal-link" title="mykeychain.load_users">load<wbr></wbr>_users</a></code></td>
-    <td><span class="rst-undocumented">Undocumented</span></td>
+    <td>Загружает данные пользователей из файла users.json.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#login" class="internal-link" title="mykeychain.login">login</a></code></td>
-    <td><span class="rst-undocumented">Undocumented</span></td>
+    <td>Выполняет аутентификацию пользователя по логину и мастер-паролю.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#main" class="internal-link" title="mykeychain.main">main</a></code></td>
-    <td><span class="rst-undocumented">Undocumented</span></td>
+    <td>Главная точка входа в приложение MyKeyChain.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#main_menu" class="internal-link" title="mykeychain.main_menu">main<wbr></wbr>_menu</a></code></td>
-    <td><span class="rst-undocumented">Undocumented</span></td>
+    <td>Выводит главное меню приложения на консоль.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#save_users" class="internal-link" title="mykeychain.save_users">save<wbr></wbr>_users</a></code></td>
-    <td><span class="rst-undocumented">Undocumented</span></td>
+    <td>Сохраняет данные пользователей в файл users.json.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#search_passwords" class="internal-link" title="mykeychain.search_passwords">search<wbr></wbr>_passwords</a></code></td>
-    <td><span class="rst-undocumented">Undocumented</span></td>
+    <td>Выполняет поиск паролей по подстроке в названии ресурса.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#select_category" class="internal-link" title="mykeychain.select_category">select<wbr></wbr>_category</a></code></td>
-    <td><span class="rst-undocumented">Undocumented</span></td>
+    <td>Позволяет пользователю выбрать категорию из списка доступных.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#show_all_passwords" class="internal-link" title="mykeychain.show_all_passwords">show<wbr></wbr>_all<wbr></wbr>_passwords</a></code></td>
-    <td><span class="rst-undocumented">Undocumented</span></td>
+    <td>Выводит все сохранённые пароли пользователя, сгруппированные по категориям.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#show_passwords_by_category" class="internal-link" title="mykeychain.show_passwords_by_category">show<wbr></wbr>_passwords<wbr></wbr>_by<wbr></wbr>_category</a></code></td>
-    <td><span class="rst-undocumented">Undocumented</span></td>
+    <td>Выводит пароли пользователя, отфильтрованные по выбранной категории.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#update_password" class="internal-link" title="mykeychain.update_password">update<wbr></wbr>_password</a></code></td>
-    <td><span class="rst-undocumented">Undocumented</span></td>
+    <td>Обновляет пароль для существующего ресурса.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#user_menu" class="internal-link" title="mykeychain.user_menu">user<wbr></wbr>_menu</a></code></td>
-    <td><span class="rst-undocumented">Undocumented</span></td>
+    <td>Выводит меню действий для авторизованного пользователя.</td>
   </tr><tr class="function">
     
     <td>Function</td>
     <td><code><a href="#user_session" class="internal-link" title="mykeychain.user_session">user<wbr></wbr>_session</a></code></td>
-    <td><span class="rst-undocumented">Undocumented</span></td>
+    <td>Запускает интерактивную сессию для авторизованного пользователя.</td>
   </tr><tr class="constant">
     
     <td>Constant</td>
@@ -571,11 +679,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Функция добавления нового пароля для пользователя.</p>
-<p>Функция запрашивает у пользователя название ресурса и пароль.
-Если пароль не введён, он автоматически генерируется.
-Перед сохранением пароль шифруется с использованием шифра Цезаря.</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">login<wbr></wbr>_name:</span>str</td><td class="fieldArgDesc">Логин текущего пользователя</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">users:</span><code>dict</code></td><td class="fieldArgDesc">Словарь пользователей и их данных</td></tr></table></div>
+    <div><p>Добавляет новый пароль для ресурса.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">login<wbr></wbr>_name:</span>str</td><td class="fieldArgDesc">Логин пользователя</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">users:</span>dict</td><td class="fieldArgDesc">Словарь пользователей</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code><a href="mykeychain.InvalidInputError.html" class="internal-link" title="mykeychain.InvalidInputError">InvalidInputError</a></code></td><td>Если ресурс пустой</td></tr><tr><td class="fieldArgContainer"><code><a href="mykeychain.ResourceExistsError.html" class="internal-link" title="mykeychain.ResourceExistsError">ResourceExistsError</a></code></td><td>Если ресурс уже существует</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -599,11 +703,11 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p>Функция шифрования/расшифровки строки с использованием шифра Цезаря.</p>
+    <div><p>Функция шифрования/расшифровки строки c использованием шифра Цезаря.</p>
 <p>Функция выполняет сдвиг символов входной строки по заданному набору
 символов. Может использоваться как для шифрования, так и для
 расшифровки данных в зависимости от значения параметра decrypt.</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">text:</span>str</td><td class="fieldArgDesc">Входная строка для шифрования или расшифровки</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">shift:</span>int</td><td class="fieldArgDesc">Величина сдвига символов</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">decrypt:</span>bool</td><td class="fieldArgDesc">Флаг расшифровки (True — расшифровка, False — шифрование)</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer">str</td><td class="fieldArgDesc">Cтрока-результат после шифрования или расшифровки</td></tr></table></div>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">text:</span>str</td><td class="fieldArgDesc">Входная строка для шифрования или расшифровки</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">shift:</span>int</td><td class="fieldArgDesc">Величина сдвига символов</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">decrypt:</span>bool</td><td class="fieldArgDesc">Флаг расшифровки (True — расшифровка, False — шифрование)</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer">str</td><td class="fieldArgDesc">Cтрокa-результат после шифрования или расшифровки</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -627,7 +731,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Создаёт новый пользовательский аккаунт в системе.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer">str</td><td class="fieldArgDesc">Логин созданного пользователя</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code><a href="mykeychain.UserExistsError.html" class="internal-link" title="mykeychain.UserExistsError">UserExistsError</a></code></td><td>Если логин уже занят</td></tr><tr><td class="fieldArgContainer"><code><a href="mykeychain.InvalidInputError.html" class="internal-link" title="mykeychain.InvalidInputError">InvalidInputError</a></code></td><td>При пустом логине или коротком/несовпадающем пароле</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -651,7 +755,10 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Создаёт новую пользовательскую категорию.</p>
+<p>Проверяет, что категория не дублирует существующие (включая стандартные),
+и сохраняет её в данных пользователя.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">login<wbr></wbr>_name:</span>str</td><td class="fieldArgDesc">Логин текущего пользователя</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">users:</span>dict</td><td class="fieldArgDesc">Словарь пользователей и их данных</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer">str</td><td class="fieldArgDesc">Название созданной категории</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -675,7 +782,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Удаляет пароль для ресурса.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code><a href="mykeychain.InvalidInputError.html" class="internal-link" title="mykeychain.InvalidInputError">InvalidInputError</a></code></td><td>Если ресурс пустой</td></tr><tr><td class="fieldArgContainer"><code><a href="mykeychain.ResourceNotFoundError.html" class="internal-link" title="mykeychain.ResourceNotFoundError">ResourceNotFoundError</a></code></td><td>Если ресурс не найден</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -699,7 +806,10 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Взаимодействует с пользователем для генерации пароля по заданным параметрам.</p>
+<p>Запрашивает длину, использование цифр и специальных символов.
+Если auto=True, пароль возвращается без вывода на экран.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">auto:</span>bool</td><td class="fieldArgDesc">Флаг автоматического режима (без вывода результата)</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer">str</td><td class="fieldArgDesc">Сгенерированный пароль</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -752,7 +862,10 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Возвращает список стандартных категорий для группировки паролей.</p>
+<p>Эти категории используются при добавлении или просмотрах сохранённых
+паролей и не могут быть удалены или изменены пользователем.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer">list[str]</td><td class="fieldArgDesc">Список строк с названиями стандартных категорий</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -776,7 +889,11 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Загружает набор символов из файла charset.txt.</p>
+<p>Если файл не существует, создаёт его с набором стандартных ASCII-символов.
+Файл используется для определения алфавита при шифровании/расшифровке
+с помощью шифра Цезаря.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer">str</td><td class="fieldArgDesc">Строка, представляющая используемый набор символов</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -800,7 +917,11 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Загружает данные пользователей из файла users.json.</p>
+<p>Если файл не существует, возвращает пустой словарь.
+Данные хранятся в формате JSON и содержат мастер-пароли,
+зашифрованные пароли и пользовательские категории.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer">dict</td><td class="fieldArgDesc">Словарь пользователей, где ключ — логин, значение — данные аккаунта</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -824,7 +945,12 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Выполняет аутентификацию пользователя по логину и мастер-паролю.</p>
+<p>Если аккаунты отсутствуют — предлагает создать первый.
+При вводе несуществующего логина — предлагает создать новый аккаунт.
+Разрешено до 3 попыток ввода пароля. При успешной аутентификации
+запускается пользовательская сессия.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code><a href="mykeychain.UserNotFoundError.html" class="internal-link" title="mykeychain.UserNotFoundError">UserNotFoundError</a></code></td><td>Если пользователь не найден и отказался от создания аккаунта</td></tr><tr><td class="fieldArgContainer"><code><a href="mykeychain.AuthenticationError.html" class="internal-link" title="mykeychain.AuthenticationError">AuthenticationError</a></code></td><td>Если исчерпаны все попытки ввода пароля</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -848,7 +974,11 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Главная точка входа в приложение MyKeyChain.</p>
+<p>Запускает бесконечный цикл главного меню, обрабатывает выбор пользователя
+и управляет потоком программы: создание аккаунта, вход или завершение работы.
+Все исключения перехватываются и отображаются в понятном виде.</p>
+</div>
   </div>
 </div><div class="basefunction">
   
@@ -872,7 +1002,11 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Выводит главное меню приложения на консоль.</p>
+<p>Отображает приветствие и три основные опции:
+создание аккаунта, вход в существующий аккаунт и выход из программы.
+Используется в главном цикле программы для навигации пользователя.</p>
+</div>
   </div>
 </div><div class="basefunction">
   
@@ -896,7 +1030,10 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Сохраняет данные пользователей в файл users.json.</p>
+<p>Данные записываются в человекочитаемом формате с отступами (indent=2)
+и с поддержкой Unicode (ensure_ascii=False).</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">users:</span>dict</td><td class="fieldArgDesc">Словарь пользователей для сохранения</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -920,7 +1057,10 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Выполняет поиск паролей по подстроке в названии ресурса.</p>
+<p>Поиск нечувствителен к регистру. Отображает совпадения с указанием
+категории и расшифрованным паролем.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">login<wbr></wbr>_name:</span>str</td><td class="fieldArgDesc">Логин текущего пользователя</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">users:</span>dict</td><td class="fieldArgDesc">Словарь пользователей и их данных</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -944,7 +1084,10 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Позволяет пользователю выбрать категорию из списка доступных.</p>
+<p>Выводит стандартные и пользовательские категории, а также предлагает
+создать новую, если нужно.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">login<wbr></wbr>_name:</span>str</td><td class="fieldArgDesc">Логин текущего пользователя</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">users:</span>dict</td><td class="fieldArgDesc">Словарь пользователей и их данных</td></tr></table><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer">str</td><td class="fieldArgDesc">Название выбранной категории</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -968,7 +1111,10 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Выводит все сохранённые пароли пользователя, сгруппированные по категориям.</p>
+<p>Пароли расшифровываются на лету с использованием шифра Цезаря и
+отображаются в читаемом виде только на экране.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">login<wbr></wbr>_name:</span>str</td><td class="fieldArgDesc">Логин текущего пользователя</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">users:</span>dict</td><td class="fieldArgDesc">Словарь пользователей и их данных</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -992,7 +1138,10 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Выводит пароли пользователя, отфильтрованные по выбранной категории.</p>
+<p>Позволяет выбрать категорию (стандартную или пользовательскую) и
+показывает все пароли, относящиеся к ней.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">login<wbr></wbr>_name:</span>str</td><td class="fieldArgDesc">Логин текущего пользователя</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">users:</span>dict</td><td class="fieldArgDesc">Словарь пользователей и их данных</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1016,7 +1165,7 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Обновляет пароль для существующего ресурса.</p><table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code><a href="mykeychain.InvalidInputError.html" class="internal-link" title="mykeychain.InvalidInputError">InvalidInputError</a></code></td><td>Если ресурс пустой</td></tr><tr><td class="fieldArgContainer"><code><a href="mykeychain.ResourceNotFoundError.html" class="internal-link" title="mykeychain.ResourceNotFoundError">ResourceNotFoundError</a></code></td><td>Если ресурс не найден</td></tr></table></div>
   </div>
 </div><div class="basefunction">
   
@@ -1040,7 +1189,11 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Выводит меню действий для авторизованного пользователя.</p>
+<p>Содержит 8 опций: управление паролями (добавление, изменение, удаление),
+генерация, просмотр всех паролей, фильтрация по категории, поиск
+и выход из аккаунта. Вызывается в сессии пользователя.</p>
+</div>
   </div>
 </div><div class="basefunction">
   
@@ -1064,7 +1217,12 @@
   </div>
   <div class="docstring functionBody">
     
-    <div><p class="undocumented">Undocumented</p></div>
+    <div><p>Запускает интерактивную сессию для авторизованного пользователя.</p>
+<p>Обеспечивает циклическое отображение пользовательского меню и выполнение
+выбранных действий до тех пор, пока пользователь не выберет выход.
+Все операции (добавление, удаление, поиск и т.д.) выполняются в контексте
+текущего аккаунта. Перед выходом данные сохраняются на диск.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">login<wbr></wbr>_name:</span>str</td><td class="fieldArgDesc">Логин активного пользователя</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">users:</span>dict</td><td class="fieldArgDesc">Словарь всех пользовательских данных (для возможного изменения)</td></tr></table></div>
   </div>
 </div><div class="baseconstant">
   
@@ -1150,7 +1308,7 @@
   <div class="container-fluid">
     <a href="index.html">API Documentation</a> for mykeychain,
   generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
-    25.10.1 at 2025-12-17 21:44:18.
+    25.10.1 at 2025-12-18 21:38:25.
   </div>
 
   <!-- Search related scripts needs to be loaded at the end of HTML 
