@@ -220,7 +220,6 @@ def search_passwords(login_name: str, users: dict):
         print(f"{resource} [{category}]: {decrypted}")
     print(f"\nНайдено: {len(found)}")
 
-#ДАШАААА
 def get_categories():
     return [
         "Соцсети",
