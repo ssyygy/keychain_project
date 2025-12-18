@@ -4,10 +4,48 @@ import secrets
 import string 
 import getpass
 
+class MyKeyChainError(Exception):
+    """Базовый класс для всех исключений MyKeyChain"""
+    pass
+
+class UserExistsError(MyKeyChainError):
+    """Попытка создать аккаунт с уже существующим логином"""
+    pass
+
+class UserNotFoundError(MyKeyChainError):
+    """Пользователь не найден"""
+    pass
+
+class AuthenticationError(MyKeyChainError):
+    """Ошибка аутентификации (неверный пароль)"""
+    pass
+
+class InvalidInputError(MyKeyChainError):
+    """Некорректный ввод от пользователя (пустой логин, короткий пароль и т.д.)"""
+    pass
+
+class ResourceExistsError(MyKeyChainError):
+    """Пароль для ресурса уже существует"""
+    pass
+
+class ResourceNotFoundError(MyKeyChainError):
+    """Ресурс не найден при обновлении/удалении"""
+    pass
+
 CHARSET_FILE = "charset.txt"
 USERS_FILE = "users.json"
 
 def load_charset():
+    """
+    Загружает набор символов из файла charset.txt.
+
+    Если файл не существует, создаёт его с набором стандартных ASCII-символов.
+    Файл используется для определения алфавита при шифровании/расшифровке
+    с помощью шифра Цезаря.
+
+    :returns: Строка, представляющая используемый набор символов
+    :rtype: str
+    """
     if not os.path.exists(CHARSET_FILE):
         default_charset = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
         with open(CHARSET_FILE, "w", encoding="utf-8") as f:
@@ -20,7 +58,7 @@ CHARSET = load_charset()
 
 def caesar_cipher(text: str, shift: int, decrypt=False) -> str:
     """
-    Функция шифрования/расшифровки строки с использованием шифра Цезаря.
+    Функция шифрования/расшифровки строки c использованием шифра Цезаря.
 
     Функция выполняет сдвиг символов входной строки по заданному набору
     символов. Может использоваться как для шифрования, так и для
@@ -32,7 +70,7 @@ def caesar_cipher(text: str, shift: int, decrypt=False) -> str:
     :type shift: int
     :param decrypt: Флаг расшифровки (True — расшифровка, False — шифрование)
     :type decrypt: bool
-    :returns: Cтрока-результат после шифрования или расшифровки
+    :returns: Cтрокa-результат после шифрования или расшифровки
     :rtype: str
     """
     if not text:
@@ -49,39 +87,60 @@ def caesar_cipher(text: str, shift: int, decrypt=False) -> str:
     return ''.join(result)
 
 def load_users():
+    """
+    Загружает данные пользователей из файла users.json.
+
+    Если файл не существует, возвращает пустой словарь.
+    Данные хранятся в формате JSON и содержат мастер-пароли,
+    зашифрованные пароли и пользовательские категории.
+
+    :returns: Словарь пользователей, где ключ — логин, значение — данные аккаунта
+    :rtype: dict
+    """
     if not os.path.exists(USERS_FILE): 
         return {}
     with open(USERS_FILE, "r", encoding="utf-8") as f:
         return json.load(f)
 
 def save_users(users):
+    """
+    Сохраняет данные пользователей в файл users.json.
+
+    Данные записываются в человекочитаемом формате с отступами (indent=2)
+    и с поддержкой Unicode (ensure_ascii=False).
+
+    :param users: Словарь пользователей для сохранения
+    :type users: dict
+    """
     with open(USERS_FILE, "w", encoding="utf-8") as f:
         json.dump(users, f, ensure_ascii=False, indent=2)
 
 def create_account():
+    """
+    Создаёт новый пользовательский аккаунт в системе.
+
+    :returns: Логин созданного пользователя
+    :rtype: str
+    :raises UserExistsError: Если логин уже занят
+    :raises InvalidInputError: При пустом логине или коротком/несовпадающем пароле
+    """
     users = load_users()
     while True:
         login_name = input("Введите логин: ").strip()
         if not login_name:
-            print("Логин не может быть пустым.")
-            continue
+            raise InvalidInputError("Логин не может быть пустым.")
         if login_name in users:
-            print("Аккаунт с таким логином уже существует.")
-            retry = input("Попробовать другой логин? (y/n): ").strip().lower()
-            if retry != 'y':
-                return None
+            raise UserExistsError(f"Аккаунт с логином '{login_name}' уже существует.")
         else:
             break
 
     while True:
         master = getpass.getpass("Введите мастер-пароль (минимум 6 символов): ")
         if len(master) < 6:
-            print("Слишком короткий пароль.")
-            continue
+            raise InvalidInputError("Мастер-пароль должен содержать минимум 6 символов.")
         confirm = getpass.getpass("Подтвердите мастер-пароль: ")
         if master != confirm:
-            print("Пароли не совпадают.")
-            continue
+            raise InvalidInputError("Пароли не совпадают.")
         break
 
     users[login_name] = {
@@ -91,19 +150,30 @@ def create_account():
     }
     save_users(users)
     print("Аккаунт создан успешно!")
-    print(f"Автоматический вход выполнен как {login_name}!")
     return login_name
 
 def login():
+    """
+    Выполняет аутентификацию пользователя по логину и мастер-паролю.
+
+    Если аккаунты отсутствуют — предлагает создать первый.
+    При вводе несуществующего логина — предлагает создать новый аккаунт.
+    Разрешено до 3 попыток ввода пароля. При успешной аутентификации
+    запускается пользовательская сессия.
+
+    :raises UserNotFoundError: Если пользователь не найден и отказался от создания аккаунта
+    :raises AuthenticationError: Если исчерпаны все попытки ввода пароля
+    """
     users = load_users()
     if not users:
         print("Нет аккаунтов. Создайте первый.")
         create_now = input("Создать аккаунт сейчас? (y/n): ").strip().lower()
         if create_now == 'y':
             login_name = create_account()
-            if login_name:
-                user_session(login_name, users)
-        return
+            user_session(login_name, load_users())
+            return
+        else:
+            raise UserNotFoundError("Нет аккаунтов, вход невозможен.")
 
     login_name = input("Логин: ").strip()
     if login_name not in users:
@@ -111,9 +181,10 @@ def login():
         create_now = input(f"Создать аккаунт '{login_name}'? (y/n): ").strip().lower()
         if create_now == 'y':
             login_name = create_account()
-            if login_name:
-                user_session(login_name, users)
-        return
+            user_session(login_name, load_users())
+            return
+        else:
+            raise UserNotFoundError(f"Пользователь '{login_name}' не найден.")
 
     for tries in range(3):
         master = getpass.getpass("Мастер-пароль: ")
@@ -122,11 +193,26 @@ def login():
             user_session(login_name, users)
             return
         else:
-            if 2-tries==1: print(f"Неверный пароль. У вас осталось 1 попытка!")
-            elif 2-tries==2: print(f"Неверный пароль. У вас осталось 2 попытки!")
-    print("\n"+"Слишком много попыток!")
+            remaining = 2 - tries
+            if remaining > 0:
+                word = "попытки" if remaining == 2 else "попытка"
+                print(f"Неверный пароль. У вас осталось {remaining} {word}!")
+    raise AuthenticationError("Превышено количество попыток входа.")
 
 def select_category(login_name: str, users: dict) -> str:
+    """
+    Позволяет пользователю выбрать категорию из списка доступных.
+
+    Выводит стандартные и пользовательские категории, а также предлагает
+    создать новую, если нужно.
+
+    :param login_name: Логин текущего пользователя
+    :type login_name: str
+    :param users: Словарь пользователей и их данных
+    :type users: dict
+    :returns: Название выбранной категории
+    :rtype: str
+    """
     print("\n" + "="*30)
     print("Выберите категорию:")
     print("="*30)
@@ -162,7 +248,17 @@ def select_category(login_name: str, users: dict) -> str:
         print("Неверный выбор. Попробуйте снова.")
 
 def show_passwords_by_category(login_name: str, users: dict):
+    """
+    Выводит пароли пользователя, отфильтрованные по выбранной категории.
 
+    Позволяет выбрать категорию (стандартную или пользовательскую) и
+    показывает все пароли, относящиеся к ней.
+
+    :param login_name: Логин текущего пользователя
+    :type login_name: str
+    :param users: Словарь пользователей и их данных
+    :type users: dict
+    """
     all_categories = get_categories() + users[login_name].get("custom_categories", [])
     if not all_categories:
         print("Нет доступных категорий.")
@@ -195,6 +291,17 @@ def show_passwords_by_category(login_name: str, users: dict):
     print(f"\nВсего в категории: {len(filtered)}")
 
 def search_passwords(login_name: str, users: dict):
+    """
+    Выполняет поиск паролей по подстроке в названии ресурса.
+
+    Поиск нечувствителен к регистру. Отображает совпадения с указанием
+    категории и расшифрованным паролем.
+
+    :param login_name: Логин текущего пользователя
+    :type login_name: str
+    :param users: Словарь пользователей и их данных
+    :type users: dict
+    """
     search_term = input("Введите часть названия ресурса: ").strip().lower()
     if not search_term:
         print("Пустой поисковый запрос.")
@@ -221,6 +328,15 @@ def search_passwords(login_name: str, users: dict):
     print(f"\nНайдено: {len(found)}")
 
 def get_categories():
+    """
+    Возвращает список стандартных категорий для группировки паролей.
+
+    Эти категории используются при добавлении или просмотрах сохранённых
+    паролей и не могут быть удалены или изменены пользователем.
+
+    :returns: Список строк с названиями стандартных категорий
+    :rtype: list[str]
+    """
     return [
         "Соцсети",
         "Банки/Финансы", 
@@ -235,6 +351,13 @@ def get_categories():
     ]
 
 def main_menu():
+    """
+    Выводит главное меню приложения на консоль.
+
+    Отображает приветствие и три основные опции:
+    создание аккаунта, вход в существующий аккаунт и выход из программы.
+    Используется в главном цикле программы для навигации пользователя.
+    """
     print("\n" + "="*40)
     print("Добро пожаловать в менеджер паролей MyKeyChain!")
     print("="*40)
@@ -244,6 +367,13 @@ def main_menu():
     print("="*40)
 
 def user_menu():
+    """
+    Выводит меню действий для авторизованного пользователя.
+
+    Содержит 8 опций: управление паролями (добавление, изменение, удаление),
+    генерация, просмотр всех паролей, фильтрация по категории, поиск
+    и выход из аккаунта. Вызывается в сессии пользователя.
+    """
     print("\n" + "-"*40)
     print("1. Добавить пароль")
     print("2. Изменить пароль")
@@ -256,46 +386,77 @@ def user_menu():
     print("-"*40)
 
 def main():
+    """
+    Главная точка входа в приложение MyKeyChain.
+
+    Запускает бесконечный цикл главного меню, обрабатывает выбор пользователя
+    и управляет потоком программы: создание аккаунта, вход или завершение работы.
+    Все исключения перехватываются и отображаются в понятном виде.
+    """
     while True:
         main_menu()
         choice = input("Выберите действие: ").strip()
-        if choice == "1":
-            login_name = create_account()
-            if login_name:
-                users = load_users()
-                user_session(login_name, users)
-        elif choice == "2":
-            login()
-        elif choice == "3":
-            print("Выход.")
+        try:
+            if choice == "1":
+                login_name = create_account()
+                user_session(login_name, load_users())
+            elif choice == "2":
+                login()
+            elif choice == "3":
+                print("Выход.")
+                break
+            else:
+                print("Неверный выбор.")
+        except MyKeyChainError as e:
+            print(f"\n⚠️ Ошибка: {e}")
+        except KeyboardInterrupt:
+            print("\nВыход по запросу пользователя.")
             break
-        else:
-            print("Неверный выбор.")
+        except Exception as e:
+            print(f"\n❗ Критическая ошибка: {e}")
 
 def user_session(login_name: str, users: dict):
+    """
+    Запускает интерактивную сессию для авторизованного пользователя.
+
+    Обеспечивает циклическое отображение пользовательского меню и выполнение
+    выбранных действий до тех пор, пока пользователь не выберет выход.
+    Все операции (добавление, удаление, поиск и т.д.) выполняются в контексте
+    текущего аккаунта. Перед выходом данные сохраняются на диск.
+
+    :param login_name: Логин активного пользователя
+    :type login_name: str
+    :param users: Словарь всех пользовательских данных (для возможного изменения)
+    :type users: dict
+    """
     while True:
         user_menu()
         choice = input("Выбор: ").strip()
-        if choice == "1":
-            add_password(login_name, users)
-        elif choice == "2":
-            update_password(login_name, users)
-        elif choice == "3":
-            delete_password(login_name, users)
-        elif choice == "4":
-            generate_and_show_password()
-        elif choice == "5":
-            show_all_passwords(login_name, users)
-        elif choice == "6":
-            show_passwords_by_category(login_name, users)
-        elif choice == "7":
-            search_passwords(login_name, users)
-        elif choice == "8":
-            save_users(users)
-            print("Вы вышли из аккаунта.")
-            break
-        else:
-            print("Неверный выбор.")
+        try:
+            if choice == "1":
+                add_password(login_name, users)
+            elif choice == "2":
+                update_password(login_name, users)
+            elif choice == "3":
+                delete_password(login_name, users)
+            elif choice == "4":
+                generate_and_show_password()
+            elif choice == "5":
+                show_all_passwords(login_name, users)
+            elif choice == "6":
+                show_passwords_by_category(login_name, users)
+            elif choice == "7":
+                search_passwords(login_name, users)
+            elif choice == "8":
+                save_users(users)
+                print("Вы вышли из аккаунта.")
+                break
+            else:
+                print("Неверный выбор.")
+        except MyKeyChainError as e:
+            print(f"\n⚠️ Ошибка: {e}")
+        except Exception as e:
+            print(f"\n❗ Непредвиденная ошибка: {e}")
 
 def generate_password(length=12, use_digits=True, use_special=True):
     """
@@ -323,6 +484,19 @@ def generate_password(length=12, use_digits=True, use_special=True):
     return ''.join(secrets.choice(chars) for _ in range(length))
 
 def create_new_category(login_name: str, users: dict) -> str:
+    """
+    Создаёт новую пользовательскую категорию.
+
+    Проверяет, что категория не дублирует существующие (включая стандартные),
+    и сохраняет её в данных пользователя.
+
+    :param login_name: Логин текущего пользователя
+    :type login_name: str
+    :param users: Словарь пользователей и их данных
+    :type users: dict
+    :returns: Название созданной категории
+    :rtype: str
+    """
     while True:
         new_category = input("Введите название новой категории: ").strip()
         if not new_category:
@@ -343,48 +517,43 @@ def create_new_category(login_name: str, users: dict) -> str:
 
 def add_password(login_name: str, users: dict):
     """
-    Функция добавления нового пароля для пользователя.
+    Добавляет новый пароль для ресурса.
 
-    Функция запрашивает у пользователя название ресурса и пароль.
-    Если пароль не введён, он автоматически генерируется.
-    Перед сохранением пароль шифруется с использованием шифра Цезаря.
-
-    :param login_name: Логин текущего пользователя
+    :param login_name: Логин пользователя
     :type login_name: str
-    :param users: Словарь пользователей и их данных
+    :param users: Словарь пользователей
+    :type users: dict
+    :raises InvalidInputError: Если ресурс пустой
+    :raises ResourceExistsError: Если ресурс уже существует
     """
     resource = input("Название ресурса: ").strip()
     if not resource:
-        print("\n"+"Ресурс не может быть пустым.")
-        return
+        raise InvalidInputError("Название ресурса не может быть пустым.")
     if resource in users[login_name]["passwords"]:
-        print("\n"+"Пароль для этого ресурса уже существует.")
-        return
+        raise ResourceExistsError(f"Пароль для ресурса '{resource}' уже существует.")
 
     category = select_category(login_name, users)
-    
     password = input("Пароль (оставьте пустым для генерации): ")
     if not password:
         password = generate_and_show_password(auto=True)
 
     shift = len(password)
     encrypted = caesar_cipher(password, shift)
-    
-    users[login_name]["passwords"][resource] = {
-        "encrypted": encrypted,
-        "category": category
-    }
-    
+    users[login_name]["passwords"][resource] = {"encrypted": encrypted, "category": category}
     print("Пароль добавлен.")
 
 def update_password(login_name: str, users: dict):
+    """
+    Обновляет пароль для существующего ресурса.
+
+    :raises InvalidInputError: Если ресурс пустой
+    :raises ResourceNotFoundError: Если ресурс не найден
+    """
     resource = input("Название ресурса: ").strip()
     if not resource:
-        print("\n"+"Ресурс не может быть пустым.")
-        return
+        raise InvalidInputError("Название ресурса не может быть пустым.")
     if resource not in users[login_name]["passwords"]:
-        print("\n"+"Ресурс не найден.")
-        return
+        raise ResourceNotFoundError(f"Ресурс '{resource}' не найден.")
 
     password = input("Новый пароль (оставьте пустым для генерации): ")
     if not password:
@@ -392,23 +561,22 @@ def update_password(login_name: str, users: dict):
 
     shift = len(password)
     encrypted = caesar_cipher(password, shift)
-    
     old_category = users[login_name]["passwords"][resource]["category"]
-    
-    users[login_name]["passwords"][resource] = {
-        "encrypted": encrypted,
-        "category": old_category
-    }
+    users[login_name]["passwords"][resource] = {"encrypted": encrypted, "category": old_category}
     print("Пароль обновлён.")
 
 def delete_password(login_name: str, users: dict):
+    """
+    Удаляет пароль для ресурса.
+
+    :raises InvalidInputError: Если ресурс пустой
+    :raises ResourceNotFoundError: Если ресурс не найден
+    """
     resource = input("Название ресурса: ").strip()
     if not resource:
-        print("\n"+"Ресурс не может быть пустым.")
-        return
+        raise InvalidInputError("Название ресурса не может быть пустым.")
     if resource not in users[login_name]["passwords"]:
-        print("\n"+"Ресурс не найден.")
-        return
+        raise ResourceNotFoundError(f"Ресурс '{resource}' не найден.")
 
     confirm = input(f"Удалить пароль для '{resource}'? (y/n): ").strip().lower()
     if confirm == "y":
@@ -418,6 +586,17 @@ def delete_password(login_name: str, users: dict):
         print("Удаление отменено.")
 
 def generate_and_show_password(auto=False):
+    """
+    Взаимодействует с пользователем для генерации пароля по заданным параметрам.
+
+    Запрашивает длину, использование цифр и специальных символов.
+    Если auto=True, пароль возвращается без вывода на экран.
+
+    :param auto: Флаг автоматического режима (без вывода результата)
+    :type auto: bool
+    :returns: Сгенерированный пароль
+    :rtype: str
+    """
     length = input("Длина пароля (минимальная длина 4, по умолчанию 12): ").strip()
     length = int(length) if length.isdigit() else 12
     if length < 4:
@@ -431,6 +610,17 @@ def generate_and_show_password(auto=False):
     return pwd
 
 def show_all_passwords(login_name: str, users: dict):
+    """
+    Выводит все сохранённые пароли пользователя, сгруппированные по категориям.
+
+    Пароли расшифровываются на лету с использованием шифра Цезаря и
+    отображаются в читаемом виде только на экране.
+
+    :param login_name: Логин текущего пользователя
+    :type login_name: str
+    :param users: Словарь пользователей и их данных
+    :type users: dict
+    """
     passwords = users[login_name]["passwords"]
     if not passwords:
         print("Список паролей пуст.")
@@ -459,7 +649,4 @@ def show_all_passwords(login_name: str, users: dict):
     print(f"Всего паролей: {len(passwords)}")
 
 if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        print("\nВыход по запросу пользователя.")
+    main()
