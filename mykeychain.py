@@ -5,7 +5,7 @@ import string
 import getpass
 
 class MyKeyChainError(Exception):
-    """Базовый класс для всех исключений MyKeyChain"""
+    """Класс для всех исключений"""
     pass
 
 class UserExistsError(MyKeyChainError):
