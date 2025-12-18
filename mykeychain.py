@@ -408,7 +408,7 @@ def main():
             else:
                 print("Неверный выбор.")
         except MyKeyChainError as e:
-            print(f"\n⚠️ Ошибка: {e}")
+            print(f"\n Ошибка: {e}")
         except KeyboardInterrupt:
             print("\nВыход по запросу пользователя.")
             break
@@ -454,7 +454,7 @@ def user_session(login_name: str, users: dict):
             else:
                 print("Неверный выбор.")
         except MyKeyChainError as e:
-            print(f"\n⚠️ Ошибка: {e}")
+            print(f"\n Ошибка: {e}")
         except Exception as e:
             print(f"\n❗ Непредвиденная ошибка: {e}")
 
