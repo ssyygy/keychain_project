@@ -6,29 +6,36 @@ import getpass
 
 class MyKeyChainError(Exception):
     """Класс для всех исключений"""
+
     pass
 
 class UserExistsError(MyKeyChainError):
     """Попытка создать аккаунт с уже существующим логином"""
+
     pass
 
 class UserNotFoundError(MyKeyChainError):
+
     """Пользователь не найден"""
     pass
 
 class AuthenticationError(MyKeyChainError):
+
     """Ошибка аутентификации (неверный пароль)"""
     pass
 
 class InvalidInputError(MyKeyChainError):
+
     """Некорректный ввод от пользователя (пустой логин, короткий пароль и т.д.)"""
     pass
 
 class ResourceExistsError(MyKeyChainError):
+
     """Пароль для ресурса уже существует"""
     pass
 
 class ResourceNotFoundError(MyKeyChainError):
+
     """Ресурс не найден при обновлении/удалении"""
     pass
 
@@ -59,6 +66,7 @@ def load_charset():
     :returns: Строка, представляющая используемый набор символов
     :rtype: str
     """
+
     if not os.path.exists(CHARSET_FILE):
         default_charset = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
         with open(CHARSET_FILE, "w", encoding="utf-8") as f:
@@ -92,6 +100,7 @@ def caesar_cipher(text: str, shift: int, decrypt=False) -> str:
     :returns: Cтрокa-результат после шифрования или расшифровки
     :rtype: str
     """
+
     if not text:
         return text
     direction = -1 if decrypt else 1
@@ -116,6 +125,7 @@ def load_users():
     :returns: Словарь пользователей, где ключ — логин, значение — данные аккаунта
     :rtype: dict
     """
+
     if not os.path.exists(USERS_FILE): 
         return {}
     with open(USERS_FILE, "r", encoding="utf-8") as f:
@@ -131,6 +141,7 @@ def save_users(users):
     :param users: Словарь пользователей для сохранения
     :type users: dict
     """
+
     with open(USERS_FILE, "w", encoding="utf-8") as f:
         json.dump(users, f, ensure_ascii=False, indent=2)
 
@@ -143,6 +154,7 @@ def create_account():
     :raises UserExistsError: Если логин уже занят
     :raises InvalidInputError: При пустом логине или коротком/несовпадающем пароле
     """
+    
     users = load_users()
     while True:
         login_name = input("Введите логин: ").strip()
@@ -183,6 +195,7 @@ def login():
     :raises UserNotFoundError: Если пользователь не найден и отказался от создания аккаунта
     :raises AuthenticationError: Если исчерпаны все попытки ввода пароля
     """
+
     users = load_users()
     if not users:
         print("Нет аккаунтов. Создайте первый.")
@@ -232,6 +245,7 @@ def select_category(login_name: str, users: dict) -> str:
     :returns: Название выбранной категории
     :rtype: str
     """
+
     print("\n" + "="*30)
     print("Выберите категорию:")
     print("="*30)
@@ -278,6 +292,7 @@ def show_passwords_by_category(login_name: str, users: dict):
     :param users: Словарь пользователей и их данных
     :type users: dict
     """
+
     all_categories = get_categories() + users[login_name].get("custom_categories", [])
     if not all_categories:
         print("Нет доступных категорий.")
@@ -321,6 +336,7 @@ def search_passwords(login_name: str, users: dict):
     :param users: Словарь пользователей и их данных
     :type users: dict
     """
+
     search_term = input("Введите часть названия ресурса: ").strip().lower()
     if not search_term:
         print("Пустой поисковый запрос.")
@@ -356,6 +372,7 @@ def get_categories():
     :returns: Список строк с названиями стандартных категорий
     :rtype: list[str]
     """
+
     return [
         "Соцсети",
         "Банки/Финансы", 
@@ -377,6 +394,7 @@ def main_menu():
     создание аккаунта, вход в существующий аккаунт и выход из программы.
     Используется в главном цикле программы для навигации пользователя.
     """
+
     print("\n" + "="*40)
     print("Добро пожаловать в менеджер паролей MyKeyChain!")
     print("="*40)
@@ -393,6 +411,7 @@ def user_menu():
     генерация, просмотр всех паролей, фильтрация по категории, поиск
     и выход из аккаунта. Вызывается в сессии пользователя.
     """
+
     print("\n" + "-"*40)
     print("1. Добавить пароль")
     print("2. Изменить пароль")
@@ -412,6 +431,7 @@ def main():
     и управляет потоком программы: создание аккаунта, вход или завершение работы.
     Все исключения перехватываются и отображаются в понятном виде.
     """
+
     while True:
         main_menu()
         choice = input("Выберите действие: ").strip()
@@ -432,7 +452,7 @@ def main():
             print("\nВыход по запросу пользователя.")
             break
         except Exception as e:
-            print(f"\n❗ Критическая ошибка: {e}")
+            print(f"\n Критическая ошибка: {e}")
 
 def user_session(login_name: str, users: dict):
     """
@@ -448,6 +468,7 @@ def user_session(login_name: str, users: dict):
     :param users: Словарь всех пользовательских данных (для возможного изменения)
     :type users: dict
     """
+
     while True:
         user_menu()
         choice = input("Выбор: ").strip()
@@ -475,7 +496,7 @@ def user_session(login_name: str, users: dict):
         except MyKeyChainError as e:
             print(f"\n Ошибка: {e}")
         except Exception as e:
-            print(f"\n❗ Непредвиденная ошибка: {e}")
+            print(f"\n Непредвиденная ошибка: {e}")
 
 def generate_password(length=12, use_digits=True, use_special=True):
     """
@@ -495,6 +516,7 @@ def generate_password(length=12, use_digits=True, use_special=True):
     :returns: Сгенерированный пароль
     :rtype: str
     """
+
     chars = string.ascii_letters
     if use_digits:
         chars += string.digits
@@ -516,6 +538,7 @@ def create_new_category(login_name: str, users: dict) -> str:
     :returns: Название созданной категории
     :rtype: str
     """
+
     while True:
         new_category = input("Введите название новой категории: ").strip()
         if not new_category:
@@ -544,7 +567,9 @@ def add_password(login_name: str, users: dict):
     :type users: dict
     :raises InvalidInputError: Если ресурс пустой
     :raises ResourceExistsError: Если ресурс уже существует
+    :raises InvalidInputError: Если такой пароль уже сохранён для другого ресурса
     """
+
     resource = input("Название ресурса: ").strip()
     if not resource:
         raise InvalidInputError("Название ресурса не может быть пустым.")
@@ -555,6 +580,14 @@ def add_password(login_name: str, users: dict):
     password = input("Пароль (оставьте пустым для генерации): ")
     if not password:
         password = generate_and_show_password(auto=True)
+    for res, data in users[login_name]["passwords"].items():
+        shift = len(data["encrypted"])
+        existing_pass = caesar_cipher(data["encrypted"], shift, decrypt=True)
+        if existing_pass == password:
+            raise InvalidInputError(
+                f"Пароль уже используется для ресурса '{res}'. "
+                "Использование одинаковых паролей небезопасно!"
+            )
 
     shift = len(password)
     encrypted = caesar_cipher(password, shift)
@@ -568,6 +601,7 @@ def update_password(login_name: str, users: dict):
     :raises InvalidInputError: Если ресурс пустой
     :raises ResourceNotFoundError: Если ресурс не найден
     """
+
     resource = input("Название ресурса: ").strip()
     if not resource:
         raise InvalidInputError("Название ресурса не может быть пустым.")
@@ -591,6 +625,7 @@ def delete_password(login_name: str, users: dict):
     :raises InvalidInputError: Если ресурс пустой
     :raises ResourceNotFoundError: Если ресурс не найден
     """
+
     resource = input("Название ресурса: ").strip()
     if not resource:
         raise InvalidInputError("Название ресурса не может быть пустым.")
@@ -616,6 +651,7 @@ def generate_and_show_password(auto=False):
     :returns: Сгенерированный пароль
     :rtype: str
     """
+
     length = input("Длина пароля (минимальная длина 4, по умолчанию 12): ").strip()
     length = int(length) if length.isdigit() else 12
     if length < 4:
@@ -640,6 +676,7 @@ def show_all_passwords(login_name: str, users: dict):
     :param users: Словарь пользователей и их данных
     :type users: dict
     """
+    
     passwords = users[login_name]["passwords"]
     if not passwords:
         print("Список паролей пуст.")
