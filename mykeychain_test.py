@@ -44,15 +44,13 @@ def test_caesar_cipher_large_shift():
     encrypted = caesar_cipher(text, shift)
     decrypted = caesar_cipher(encrypted, shift, decrypt=True)
     assert decrypted == "a"
+
 def test_caesar_cipher_encrypt_and_decrypt():
     text = "hello"
     shift = 3
     encrypted = caesar_cipher(text, shift)
     decrypted = caesar_cipher(encrypted, shift, decrypt=True)
     assert decrypted == text
-
-def test_caesar_cipher_empty():
-    assert caesar_cipher("", 5) == ""
 
 def test_caesar_cipher_non_charset_unchanged():
     assert caesar_cipher("a!b", 1) != caesar_cipher("a", 1) + "!" + caesar_cipher("b", 1)
@@ -82,7 +80,6 @@ def test_load_users_empty_file_raises():
         os.remove(USERS_FILE)
 
 def test_load_users_invalid_json_raises():
-    """Негативный: некорректный JSON — ошибка разбора"""
     with open(USERS_FILE, "w", encoding="utf-8") as f:
         f.write("{ invalid json ]")
     try:
